@@ -19,7 +19,7 @@ BondTrade* BondTradeLoader::createTradeFromLine(std::string line) {
         throw std::runtime_error("Invalid line format");
     }
     
-    BondTrade* trade = new BondTrade(items[6]);
+    BondTrade* trade = new BondTrade(items[6], items[0]); // Add item[0] as tradetype to the constructor due to removal of default value for tradeType in BondTrade constructor
     
     std::tm tm = {};
     std::istringstream dateStream(items[1]);

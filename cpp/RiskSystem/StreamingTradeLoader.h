@@ -13,12 +13,14 @@
 
 class StreamingTradeLoader : public ITradeReceiver {
 private:
+    std::vector<std::unique_ptr<IStreamingTradeLoader>> loaders_;
     std::map<std::string, std::unique_ptr<IPricingEngine>> pricers_;
     IScalarResultReceiver* resultReceiver_ = nullptr; // Borrowed for the duration of loadAndPrice
-    std::vector<std::unique_ptr<IStreamingTradeLoader>> getTradeLoaders();
     void loadPricers();
 
 public:
+    explicit StreamingTradeLoader(std::vector<std::unique_ptr<IStreamingTradeLoader>> loaders);
+
     void loadAndPrice(IScalarResultReceiver* resultReceiver);
     void add(ITrade* trade) override;
 };

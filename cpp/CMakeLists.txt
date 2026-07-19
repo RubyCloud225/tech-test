@@ -81,6 +81,19 @@ add_executable(Tests
 
 target_link_libraries(Tests Models Loaders Pricers RiskSystem)
 
+# IntegrationTests executable
+# Separate from Tests: these exercise the real pricing engines (real delays,
+# real config/data files) to compare SerialPricer/StreamingTradeLoader/
+# ParallelPricer against each other, so unlike Tests this takes real time to
+# run (order of a couple of minutes) and is meant to be run on demand rather
+# than as part of every build.
+add_executable(IntegrationTests
+    Tests/TestFramework.h
+    Tests/IntegrationTestsMain.cpp
+)
+
+target_link_libraries(IntegrationTests Models Loaders Pricers RiskSystem)
+
 # Copy data files to build directory
 file(COPY ${CMAKE_SOURCE_DIR}/Loaders/TradeData DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY ${CMAKE_SOURCE_DIR}/Loaders/TradeData DESTINATION ${CMAKE_BINARY_DIR}/Loaders)

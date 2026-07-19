@@ -1,11 +1,14 @@
 #include "../RiskSystem/SerialTradeLoader.h"
-#include "../RiskSystem/StreamingTradeLoader.h"
+#include "../Loaders/BondTradeLoader.h"
+#include "../Loaders/FxTradeLoader.h"
 #include "../Models/ScalarResults.h"
 #include "../RiskSystem/SerialPricer.h"
 #include "../RiskSystem/ParallelPricer.h"
 #include "../RiskSystem/ScreenResultPrinter.h"
 #include <iostream>
+#include <memory>
 #include <string>
+#include <vector>
 
 #ifdef _WIN32
 #include <conio.h>
@@ -28,7 +31,17 @@ int _getch() {
 #endif
 
 int main(int argc, char* argv[]) {
-    SerialTradeLoader tradeLoader;
+    std::vector<std::unique_ptr<ITradeLoader>> loaders;
+
+    auto bondLoader = std::make_unique<BondTradeLoader>();
+    bondLoader->setDataFile("TradeData/BondTrades.dat");
+    loaders.push_back(std::move(bondLoader));
+
+    auto fxLoader = std::make_unique<FxTradeLoader>();
+    fxLoader->setDataFile("TradeData/FxTrades.dat");
+    loaders.push_back(std::move(fxLoader));
+
+    SerialTradeLoader tradeLoader(std::move(loaders));
     auto allTrades = tradeLoader.loadTrades();
     
     ScalarResults results;

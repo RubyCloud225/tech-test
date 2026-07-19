@@ -4,12 +4,15 @@
 #include "../Loaders/ITradeLoader.h"
 #include "../Models/ITrade.h"
 #include <vector>
+#include <memory>
 
 class SerialTradeLoader {
 private:
-    std::vector<ITradeLoader*> getTradeLoaders();
-    
+    std::vector<std::unique_ptr<ITradeLoader>> loaders_;
+
 public:
+    explicit SerialTradeLoader(std::vector<std::unique_ptr<ITradeLoader>> loaders);
+
     std::vector<std::vector<ITrade*>> loadTrades();
 };
 

@@ -75,26 +75,23 @@ BasePricingEngine::Random::Random() : gen_(rd_()), dist_(0, std::numeric_limits<
 }
 
 double BasePricingEngine::Random::nextDouble() {
+    std::lock_guard<std::mutex> lock(mutex_);
     return static_cast<double>(dist_(gen_)) / static_cast<double>(std::numeric_limits<unsigned int>::max());
 }
 
 std::map<std::string, std::string>& BasePricingEngine::getTradesToError() {
-    static std::map<std::string, std::string> tradesToError;
-    static bool initialized = false;
-    if (!initialized) {
-        tradesToError["GOV006"] = "Undefined error in pricing";
-        initialized = true;
-    }
+    // Initialization of a function-local static is thread-safe (magic statics);
+    // populating it via a separate bool flag afterwards, as before, was not.
+    static std::map<std::string, std::string> tradesToError = {
+        {"GOV006", "Undefined error in pricing"}
+    };
     return tradesToError;
 }
 
 std::map<std::string, std::string>& BasePricingEngine::getTradesToWarn() {
-    static std::map<std::string, std::string> tradesToWarn;
-    static bool initialized = false;
-    if (!initialized) {
-        tradesToWarn["FWD001"] = "Unable to calibrate model to value date";
-        initialized = true;
-    }
+    static std::map<std::string, std::string> tradesToWarn = {
+        {"FWD001", "Unable to calibrate model to value date"}
+    };
     return tradesToWarn;
 }
 

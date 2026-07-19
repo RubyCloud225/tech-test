@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include <random>
+#include <mutex>
 
 class BasePricingEngine : public IPricingEngine {
 protected:
@@ -29,6 +30,9 @@ private:
     std::map<std::string, unsigned int> supportedTypes_;
     int delay_;
     
+    // ParallelPricer may call nextDouble() for this same engine instance from
+    // multiple threads at once (one shared engine per trade type), so access
+    // to the mutable generator state is serialized with a mutex.
     class Random {
     public:
         Random();
@@ -37,6 +41,7 @@ private:
         std::random_device rd_;
         std::mt19937 gen_;
         std::uniform_int_distribution<unsigned int> dist_;
+        std::mutex mutex_;
     };
     
     Random random_;

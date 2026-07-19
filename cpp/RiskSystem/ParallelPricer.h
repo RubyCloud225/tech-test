@@ -6,6 +6,7 @@
 #include "../Models/IScalarResultReceiver.h"
 #include "PricingConfigLoader.h"
 #include <map>
+#include <memory>
 #include <vector>
 #include <string>
 #include <thread>
@@ -14,15 +15,13 @@
 
 class ParallelPricer {
 private:
-    std::map<std::string, IPricingEngine*> pricers_;
+    std::map<std::string, std::unique_ptr<IPricingEngine>> pricers_;
     std::mutex resultMutex_;
-    
+
     void loadPricers();
-    
+
 public:
-    ~ParallelPricer();
-    
-    void price(const std::vector<std::vector<ITrade*>>& tradeContainers, 
+    void price(const std::vector<std::vector<ITrade*>>& tradeContainers,
                IScalarResultReceiver* resultReceiver);
 };
 

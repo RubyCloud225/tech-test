@@ -9,11 +9,15 @@ class FxTrade : public BaseTrade {
 public:
     static constexpr const char* FxSpotTradeType = "FxSpot";
     static constexpr const char* FxForwardTradeType = "FxFwd";
-    
-    FxTrade(const std::string& tradeId = "", const std::string& tradeType = FxSpotTradeType)
+
+    FxTrade(const std::string& tradeId, const std::string& tradeType)
         : tradeType_(tradeType) {
         if (!tradeId.empty()) {
             tradeId_ = tradeId;
+            cleanField(tradeId_); cleanField(tradeType_);
+            if (tradeId.empty()) {
+                throw std::invalid_argument("A valid non null, non empty tradeId must be provided");
+            }
         }
     }
     

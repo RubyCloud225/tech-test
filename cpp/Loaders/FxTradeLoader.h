@@ -11,6 +11,7 @@ private:
     std::string dataFile_;
     
 public:
+    FxTrade* createTradeFromLine(std::string line);
     // NOTE: These methods are only here to allow the solution to compile prior to the test being completed.
     std::vector<ITrade*> loadTrades() override;
     std::string getDataFile() const override;

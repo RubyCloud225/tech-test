@@ -49,18 +49,17 @@ void BondTradeLoader::loadTradesFromFile(const std::string filename, BondTradeLi
     std::string line;
     while (std::getline(stream, line)) {
         if (lineCount > 0) {tradeList.add(createTradeFromLine(line)); };
+        lineCount++;
     }
 }
 
 std::vector<ITrade*> BondTradeLoader::loadTrades() {
     BondTradeList tradeList;
     loadTradesFromFile(dataFile_, tradeList);
-    
-    std::vector<ITrade*> result;
-    for (size_t i = 0; i < tradeList.size(); ++i) {
-        result.push_back(tradeList[i]);
-    }
-    return result;
+    // release() transfers ownership out before tradeList goes out of scope; copying
+    // the raw pointers here instead would leave tradeList's dtor deleting trades
+    // that the caller still owns, causing a use-after-free/double-free.
+    return tradeList.release();
 }
 
 std::string BondTradeLoader::getDataFile() const {

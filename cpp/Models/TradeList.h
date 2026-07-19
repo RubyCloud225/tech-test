@@ -23,6 +23,14 @@ public:
     
     size_t size() const { return trades_.size(); }
     ITrade* operator[](size_t index) const { return trades_[index]; }
+
+    // Transfers ownership of the held trades to the caller, leaving this list empty
+    // so its destructor won't delete trades whose ownership has moved elsewhere.
+    std::vector<ITrade*> release() {
+        std::vector<ITrade*> result;
+        result.swap(trades_);
+        return result;
+    }
     
     using iterator = std::vector<ITrade*>::iterator;
     using const_iterator = std::vector<ITrade*>::const_iterator;

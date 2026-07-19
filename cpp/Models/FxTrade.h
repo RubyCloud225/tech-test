@@ -12,12 +12,10 @@ public:
 
     FxTrade(const std::string& tradeId, const std::string& tradeType)
         : tradeType_(tradeType) {
-        if (!tradeId.empty()) {
-            tradeId_ = tradeId;
-            cleanField(tradeId_); cleanField(tradeType_);
-            if (tradeId.empty()) {
-                throw std::invalid_argument("A valid non null, non empty tradeId must be provided");
-            }
+        tradeId_ = tradeId;
+        cleanField(tradeId_); cleanField(tradeType_);
+        if (tradeId.empty()) {
+            throw std::invalid_argument("A valid non null, non empty tradeId must be provided");
         }
     }
     

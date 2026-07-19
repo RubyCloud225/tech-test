@@ -5,7 +5,7 @@
 
 // NOTE: These methods are only here to allow the solution to compile prior to the test being completed.
 
-FxTrade* FxTradeLoader::createTradeFromLine(std::string line) {
+FxTrade* FxTradeLoader::createTradeFromLine(const std::string line) {
     std::vector<std::string> items;
     std::size_t start = 0, pos;
     static const std::string separator = "¬"; // 2 bytes (0xC2 0xAC), removal of a non char

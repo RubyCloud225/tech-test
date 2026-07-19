@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <chrono>
 
-BondTrade* BondTradeLoader::createTradeFromLine(std::string line) {
+BondTrade* BondTradeLoader::createTradeFromLine(const std::string line) {
     std::vector<std::string> items;
     std::stringstream ss(line);
     std::string item;
@@ -35,7 +35,7 @@ BondTrade* BondTradeLoader::createTradeFromLine(std::string line) {
     return trade;
 }
 
-void BondTradeLoader::loadTradesFromFile(std::string filename, BondTradeList& tradeList) {
+void BondTradeLoader::loadTradesFromFile(const std::string filename, BondTradeList& tradeList) {
     if (filename.empty()) {
         throw std::invalid_argument("Filename cannot be null");
     }
@@ -48,11 +48,7 @@ void BondTradeLoader::loadTradesFromFile(std::string filename, BondTradeList& tr
     int lineCount = 0;
     std::string line;
     while (std::getline(stream, line)) {
-        if (lineCount == 0) {
-        } else {
-            tradeList.add(createTradeFromLine(line));
-        }
-        lineCount++;
+        if (lineCount > 0) {tradeList.add(createTradeFromLine(line)); };
     }
 }
 

@@ -8,6 +8,14 @@
 class TradeList : public ITradeReceiver {
 public:
     TradeList() = default;
+    ~TradeList() override {
+        for (ITrade* trade : trades_) {
+            delete trade;
+        }
+    }
+
+    TradeList(const TradeList&) = delete;
+    TradeList& operator=(const TradeList&) = delete;
     
     void add(ITrade* trade) override {
         trades_.push_back(trade);

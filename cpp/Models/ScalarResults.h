@@ -34,6 +34,22 @@ public:
         Iterator& operator++();
         ScalarResult operator*() const;
         bool operator!=(const Iterator& other) const;
+    private:
+        // Constructed by ScalarResults::begin()/end()
+        // parent and the position in each of the two underlying mappings
+        Iterator(const ScalarResults* parent,
+                std::map<std::string, double>::const_iterator resultIt,
+                std::map<std::string, std::string>::const_iterator errorIt);
+
+        // Advances errorIt_ past any trade already yielded from results_.
+        // Otherwise a trade could be dublicated.
+        void skipDuplicates();
+
+        const ScalarResults* parent_ = nullptr;
+        std::map<std::string, double>::const_iterator resultIt_;
+        std::map<std::string, std::string>::const_iterator errorIt_;
+
+        friend class ScalarResults;
     };
 
     Iterator begin() const;

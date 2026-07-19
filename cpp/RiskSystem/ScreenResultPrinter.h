@@ -5,7 +5,7 @@
 
 class ScreenResultPrinter {
 public:
-    void printResults(ScalarResults& results);
+    void printResults(const ScalarResults& results);
 };
 
 #endif // SCREENRESULTPRINTER_H

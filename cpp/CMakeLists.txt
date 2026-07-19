@@ -16,6 +16,7 @@ target_include_directories(Models PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 # Loaders library
 add_library(Loaders
     Loaders/ITradeLoader.h
+    Loaders/IStreamingTradeLoader.h
     Loaders/BondTradeLoader.h
     Loaders/BondTradeLoader.cpp
     Loaders/FxTradeLoader.h
@@ -43,6 +44,8 @@ add_library(RiskSystem
     RiskSystem/PricingEngineConfig.h
     RiskSystem/PricingConfigLoader.h
     RiskSystem/PricingConfigLoader.cpp
+    RiskSystem/PricingEngineFactory.h
+    RiskSystem/PricingEngineFactory.cpp
     RiskSystem/SerialPricer.h
     RiskSystem/SerialPricer.cpp
     RiskSystem/SerialTradeLoader.h

@@ -35,20 +35,20 @@ BondTrade* BondTradeLoader::createTradeFromLine(const std::string line) {
     return trade;
 }
 
-void BondTradeLoader::loadTradesFromFile(const std::string filename, BondTradeList& tradeList) {
+void BondTradeLoader::loadTradesFromFile(const std::string filename, ITradeReceiver& receiver) {
     if (filename.empty()) {
         throw std::invalid_argument("Filename cannot be null");
     }
-    
+
     std::ifstream stream(filename);
     if (!stream.is_open()) {
         throw std::runtime_error("Cannot open file: " + filename);
     }
-    
+
     int lineCount = 0;
     std::string line;
     while (std::getline(stream, line)) {
-        if (lineCount > 0) {tradeList.add(createTradeFromLine(line)); };
+        if (lineCount > 0) {receiver.add(createTradeFromLine(line)); };
         lineCount++;
     }
 }
@@ -60,6 +60,10 @@ std::vector<ITrade*> BondTradeLoader::loadTrades() {
     // the raw pointers here instead would leave tradeList's dtor deleting trades
     // that the caller still owns, causing a use-after-free/double-free.
     return tradeList.release();
+}
+
+void BondTradeLoader::loadTrades(ITradeReceiver* receiver) {
+    loadTradesFromFile(dataFile_, *receiver);
 }
 
 std::string BondTradeLoader::getDataFile() const {

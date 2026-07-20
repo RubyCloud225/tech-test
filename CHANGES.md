@@ -5,7 +5,7 @@
 
 Base fork point: `676b4df` (tip of `upstream/main` at fork time — "Update candidate instructions for test time expectations").
 
-Current status: **all 8 exercises implemented.** Full build is clean; the fast unit test suite (`./Tests`) passes 16/16; a separate, slower integration suite (`./IntegrationTests`, added as part of this work) passes 6/6. Exercise 8's work (`ParallelPricer`) and a dependency-injection refactor of the trade loaders are currently uncommitted on branch `exercise-7-streaming-trade-loader` — everything else is committed and merged into `main`.
+Current status: **all 8 exercises implemented.** Full build is clean; the fast unit test suite (`./Tests`) passes 16/16; a separate, slower integration suite (`./IntegrationTests`, added as part of this work) passes 6/6.
 
 ## Exercise 1 — BondTradeLoader
 - Fixed a missing `lineCount++` in `loadTradesFromFile` that left the header-skip counter stuck at 0.
